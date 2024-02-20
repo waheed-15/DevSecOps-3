@@ -1,9 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app: dotnet-app
   name: dotnet-app-deployment
 spec:
-  replicas: 1 # Set the desired number of replicas
+  replicas: 4
   selector:
     matchLabels:
       app: dotnet-app
@@ -14,20 +16,27 @@ spec:
     spec:
       containers:
       - name: dotnet-app
-        image: writetoritika/dotnet-monitoring:latest # Replace with your Docker image name
+        image: 847415613895.dkr.ecr.us-east-2.amazonaws.com/my-docker-repo
+        imagePullPolicy: Always
         ports:
-        - containerPort: 5000 # Expose the port specified in your Dockerfile
-
+        - containerPort: 5000
+          name: http
+          protocol: TCP
+# service type loadbalancer       
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: dotnet-app-service
+  labels:
+    app: dotnet-app
+    k8s-app: dotnet-app
+  name: dotnet-app
 spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 5000
+  type: LoadBalancer
   selector:
     app: dotnet-app
-  ports:
-  - protocol: TCP
-    port: 80 # Service port
-    targetPort: 5000 # Port in the container
-  type: NodePort # Use NodePort service type            
