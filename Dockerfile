@@ -8,16 +8,17 @@ ARG IMAGE_BASE=6.0-alpine
 FROM mcr.microsoft.com/dotnet/sdk:$IMAGE_BASE as build
 WORKDIR /build
 RUN mkdir src
+COPY src /build/src
 
 # Copy project source files
-COPY src/Pages src
-COPY src/wwwroot src
-COPY src/ApiHelper.cs src
-COPY src/Pages src
-COPY src/appsettings.Development.sample.json src
-COPY src/appsettings.json src
-COPY src/dotnet-demoapp.csproj src
-COPY src/Program.cs src
+# COPY src/Pages src
+# COPY src/wwwroot src
+# COPY src/ApiHelper.cs src
+# COPY src/Pages src
+# COPY src/appsettings.Development.sample.json src
+# COPY src/appsettings.json src
+# COPY src/dotnet-demoapp.csproj src
+# COPY src/Program.cs src
 
 # Restore, build & publish
 WORKDIR /build/src
