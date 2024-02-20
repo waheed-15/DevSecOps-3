@@ -7,9 +7,17 @@ ARG IMAGE_BASE=6.0-alpine
 # Build image has SDK and tools (Linux)
 FROM mcr.microsoft.com/dotnet/sdk:$IMAGE_BASE as build
 WORKDIR /build
+RUN mkdir src
 
 # Copy project source files
-COPY src ./src
+COPY src/Pages src
+COPY src/wwwroot src
+COPY src/ApiHelper.cs src
+COPY src/Pages src
+COPY src/appsettings.Development.sample.json src
+COPY src/appsettings.json src
+COPY src/dotnet-demoapp.csproj src
+COPY src/Program.cs src
 
 # Restore, build & publish
 WORKDIR /build/src
